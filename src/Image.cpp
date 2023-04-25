@@ -1,4 +1,6 @@
 #include "Image.h"
+#include <opencv2/stitching.hpp>
+#include<opencv2/highgui.hpp>
 
 Image::Image(int width, int height)
 {
@@ -46,6 +48,19 @@ void Image::erode(int shape, int size)
 {
 	cv::Mat element = cv::getStructuringElement(shape, cv::Size(2 * size + 1, 2 * size + 1), cv::Point(size, size));
 	cv::erode(m_Mat, m_Mat, element);
+}
+
+Image stitch(const std::vector <Image>& images) {
+
+	cv::Stitcher::Mode mode = cv::Stitcher::PANORAMA;
+	cv::Mat pano;
+	cv::Ptr<cv::Stitcher> stitcher = cv::Stitcher::create(mode);
+	cv::Stitcher::Status status = stitcher->stitch(images, pano);
+
+	if (status != cv::Stitcher::OK) {
+		// Handle stitching failure here
+	}
+	return Image(pano); // To continue
 }
 
 void Image::save(char* filename)
