@@ -11,9 +11,13 @@ public:
 	void rotate(double angle);
 	void rotate(double angle, int x, int y);
 	void resize(int width, int height);
+	void resize(double factor);
 	void changeBrightness(double delta);
-	void dilate();
-	void erode();
+	void dilate(int shape, int size);
+	void erode(int shape, int size);
+
+	void save(char* filename);
+	void show(const char* windowName);
 private:
 	cv::Mat m_Mat;
 };

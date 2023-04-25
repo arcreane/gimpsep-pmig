@@ -26,15 +26,34 @@ void Image::resize(int width, int height)
 	cv::resize(m_Mat, m_Mat, cv::Size(width, height));
 }
 
+void Image::resize(double factor)
+{
+	resize(m_Mat.cols * factor, m_Mat.rows * factor);
+}
+
 void Image::changeBrightness(double delta)
 {
 	m_Mat.convertTo(m_Mat, m_Mat.type(), 1, delta);
 }
 
-void Image::dilate()
+void Image::dilate(int shape, int size)
 {
+	cv::Mat element = cv::getStructuringElement(shape, cv::Size(2 * size + 1, 2 * size + 1), cv::Point(size, size));
+	cv::dilate(m_Mat, m_Mat, element);
 }
 
-void Image::erode()
+void Image::erode(int shape, int size)
 {
+	cv::Mat element = cv::getStructuringElement(shape, cv::Size(2 * size + 1, 2 * size + 1), cv::Point(size, size));
+	cv::erode(m_Mat, m_Mat, element);
+}
+
+void Image::save(char* filename)
+{
+	cv::imwrite(filename, m_Mat);
+}
+
+void Image::show(const char* windowName)
+{
+	cv::imshow(windowName, m_Mat);
 }
