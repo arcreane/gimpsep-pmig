@@ -1,0 +1,40 @@
+#include "Image.h"
+
+Image::Image(int width, int height)
+{
+	m_Mat = cv::Mat::zeros(cv::Size(width, height), CV_64F);
+}
+
+Image::Image(char* filename)
+{
+	m_Mat = cv::imread(filename);
+}
+
+void Image::rotate(double angle)
+{
+	rotate(angle, m_Mat.cols / 2, m_Mat.rows / 2);
+}
+
+void Image::rotate(double angle, int x, int y)
+{
+	cv::Mat transform = cv::getRotationMatrix2D(cv::Point2f(x, y), angle, 1.0);
+	cv::warpAffine(m_Mat, m_Mat, transform, m_Mat.size());
+}
+
+void Image::resize(int width, int height)
+{
+	cv::resize(m_Mat, m_Mat, cv::Size(width, height));
+}
+
+void Image::changeBrightness(double delta)
+{
+	m_Mat.convertTo(m_Mat, m_Mat.type(), 1, delta);
+}
+
+void Image::dilate()
+{
+}
+
+void Image::erode()
+{
+}
