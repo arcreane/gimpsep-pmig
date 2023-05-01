@@ -27,4 +27,5 @@ private:
 	cv::Mat m_Mat;
 };
 
-Image stitch(std::vector<Image>& images);
+Image stitch(std::vector<Image>& images, cv::Stitcher::Mode mode = cv::Stitcher::SCANS);
+Image panorama(std::vector<Image>& images);

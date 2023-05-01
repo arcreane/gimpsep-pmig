@@ -60,7 +60,12 @@ void Image::show(const char* windowName)
 	cv::imshow(windowName, m_Mat);
 }
 
-Image stitch(std::vector<Image>& images)
+Image panorama(std::vector<Image>& images)
+{
+	return stitch(images, cv::Stitcher::PANORAMA);
+}
+
+Image stitch(std::vector<Image>& images, cv::Stitcher::Mode mode)
 {
 	std::vector<cv::Mat> mats;
 
@@ -68,7 +73,7 @@ Image stitch(std::vector<Image>& images)
 
 	cv::Mat stitched;
 
-	cv::Ptr<cv::Stitcher> stitcher = cv::Stitcher::create(cv::Stitcher::SCANS);
+	cv::Ptr<cv::Stitcher> stitcher = cv::Stitcher::create(mode);
 	stitcher->stitch(mats, stitched);
 
 	return Image(stitched);
