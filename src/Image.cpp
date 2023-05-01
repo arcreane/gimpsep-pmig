@@ -1,11 +1,13 @@
 #include "Image.h"
 
+#include <algorithm>
+
 Image::Image(int width, int height)
 {
 	m_Mat = cv::Mat::zeros(cv::Size(width, height), CV_64F);
 }
 
-Image::Image(char* filename)
+Image::Image(const char* filename)
 {
 	m_Mat = cv::imread(filename);
 }
@@ -56,4 +58,18 @@ void Image::save(char* filename)
 void Image::show(const char* windowName)
 {
 	cv::imshow(windowName, m_Mat);
+}
+
+Image stitch(std::vector<Image>& images)
+{
+	std::vector<cv::Mat> mats;
+
+	std::transform(images.begin(), images.end(), std::back_inserter(mats), [](Image image) { return image.getMat(); });
+
+	cv::Mat stitched;
+
+	cv::Ptr<cv::Stitcher> stitcher = cv::Stitcher::create(cv::Stitcher::SCANS);
+	stitcher->stitch(mats, stitched);
+
+	return Image(stitched);
 }
