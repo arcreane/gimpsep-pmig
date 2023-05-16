@@ -11,6 +11,7 @@ class Image
 public:
 	Image(int width, int height);
 	Image(const char* filename);
+	Image() : m_Mat() {}
 	Image(cv::Mat mat) : m_Mat(mat) {}
 
 	/**
@@ -47,12 +48,11 @@ public:
 		Erodes the image
 	*/
 	void erode(int shape, int size);
-	Image stitch(const std::vector < cv::Mat>& images);
 
 	/**
 		Saves the image to a file
 	*/
-	void save(char* filename);
+	void save(const char* filename);
 
 	/**
 		Shows the image in a window
@@ -60,6 +60,10 @@ public:
 	void show(const char* windowName);
 
 	inline cv::Mat getMat() { return m_Mat; }
+	inline int getWidth() { return m_Mat.cols; }
+	inline int getHeight() { return m_Mat.rows; }
+
+	inline bool loadedSuccessfully() { return m_Mat.data; }
 
 
 	/**
