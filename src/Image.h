@@ -47,6 +47,7 @@ public:
 		Erodes the image
 	*/
 	void erode(int shape, int size);
+	Image stitch(const std::vector < cv::Mat>& images);
 
 	/**
 		Saves the image to a file
