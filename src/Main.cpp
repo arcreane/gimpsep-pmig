@@ -16,8 +16,8 @@ int main(void)
 
 	std::cout << "Input the command you want to use:<" << std::endl;
 	std::cout << "1. Open an image" << std::endl;
-	std::cout << "2. Cr�er une nouvelle image" << std::endl;
-	std::cout << "3. Cr�er un panorama � partir de plusieurs images" << std::endl;
+	std::cout << "2. Créer une nouvelle image" << std::endl;
+	std::cout << "3. Créer un panorama à partir de plusieurs images" << std::endl;
 	std::cout << "4. Quitter l'application" << std::endl;
 }
 

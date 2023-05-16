@@ -61,16 +61,17 @@ public:
 
 	inline cv::Mat getMat() { return m_Mat; }
 
+
+	/**
+		Stitches a vector of images together
+	*/
+	static Image stitch(std::vector<Image>& images, cv::Stitcher::Mode mode = cv::Stitcher::SCANS);
+
+	/**
+		Stitches a vector of images together in PANORAMA mode
+	*/
+	static Image panorama(std::vector<Image>& images);
+
 private:
 	cv::Mat m_Mat;
 };
-
-/**
-	Stitches a vector of images together
-*/
-Image stitch(std::vector<Image>& images, cv::Stitcher::Mode mode = cv::Stitcher::SCANS);
-
-/**
-	Stitches a vector of images together in PANORAMA mode
-*/
-Image panorama(std::vector<Image>& images);

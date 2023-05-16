@@ -52,19 +52,6 @@ void Image::erode(int shape, int size)
 	cv::erode(m_Mat, m_Mat, element);
 }
 
-Image stitch(const std::vector <Image>& images) {
-
-	cv::Stitcher::Mode mode = cv::Stitcher::PANORAMA;
-	cv::Mat pano;
-	cv::Ptr<cv::Stitcher> stitcher = cv::Stitcher::create(mode);
-	cv::Stitcher::Status status = stitcher->stitch(images, pano);
-
-	if (status != cv::Stitcher::OK) {
-		// Handle stitching failure here
-	}
-	return Image(pano); // To continue
-}
-
 void Image::save(char* filename)
 {
 	cv::imwrite(filename, m_Mat);
@@ -75,12 +62,13 @@ void Image::show(const char* windowName)
 	cv::imshow(windowName, m_Mat);
 }
 
-Image panorama(std::vector<Image>& images)
+
+Image Image::panorama(std::vector<Image>& images)
 {
 	return stitch(images, cv::Stitcher::PANORAMA);
 }
 
-Image stitch(std::vector<Image>& images, cv::Stitcher::Mode mode)
+Image Image::stitch(std::vector<Image>& images, cv::Stitcher::Mode mode)
 {
 	std::vector<cv::Mat> mats;
 
