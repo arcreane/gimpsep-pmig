@@ -50,6 +50,21 @@ public:
 	void erode(int shape, int size);
 
 	/**
+		Applies a gaussian blur on the image
+	*/
+	void gaussianBlur(int size);
+
+	/**
+			Converts the image to grayscale
+	*/
+	void grayScale();
+
+	/**
+			Detects the edges of the image
+	*/
+	Image detectEdges(int kernelSize, double threshold);
+
+	/**
 		Saves the image to a file
 	*/
 	void save(const char* filename);
@@ -58,6 +73,11 @@ public:
 		Shows the image in a window
 	*/
 	void show(const char* windowName);
+
+	/**
+		Creates a copy of the image
+	*/
+	Image copy();
 
 	inline cv::Mat getMat() { return m_Mat; }
 	inline int getWidth() { return m_Mat.cols; }

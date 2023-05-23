@@ -162,7 +162,8 @@ void enterEditMode()
 		image.erode(askNumber(1, 3, "Entrez la forme de l'élément structurant (1: rectangle, 2: ellipse, 3: croix)"), askNumber(1, 8, "Entrez le nombre de fois que vous voulez eroder l'image (entre 1 et 8)"));
 		break;
 	case 10:
-		//TODO
+		image = image.detectEdges(askNumber(1, 8, "Entrez la taille du kernel (entre 1 et 8)"), askDouble(0, 256, "Entrez la valeur du threshold (entre 0 et 256)"));
+		break;
 	case 11:
 		returnToMain = true;
 	default:

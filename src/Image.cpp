@@ -52,6 +52,26 @@ void Image::erode(int shape, int size)
 	cv::erode(m_Mat, m_Mat, element);
 }
 
+void Image::gaussianBlur(int size)
+{
+	cv::GaussianBlur(m_Mat, m_Mat, cv::Size(size, size), 0);
+}
+
+void Image::grayScale()
+{
+	cv::cvtColor(m_Mat, m_Mat, cv::COLOR_RGB2GRAY);
+}
+
+Image Image::detectEdges(int kernelSize, double threshold)
+{
+	cv::Mat edges;
+	Image copy = this->copy();
+	copy.grayScale();
+	copy.gaussianBlur(kernelSize);
+	cv::Canny(copy.getMat(), edges, threshold, threshold, kernelSize);
+	return Image(edges);
+}
+
 void Image::save(const char* filename)
 {
 	cv::imwrite(filename, m_Mat);
@@ -62,6 +82,10 @@ void Image::show(const char* windowName)
 	cv::imshow(windowName, m_Mat);
 	cv::waitKey(0);
 	cv::destroyWindow(windowName);
+}
+
+Image Image::copy() {
+	return Image(m_Mat.clone());
 }
 
 
