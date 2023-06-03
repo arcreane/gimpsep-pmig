@@ -1,8 +1,10 @@
 #include "Image.h"
 #include <opencv2/stitching.hpp>
-#include<opencv2/highgui.hpp>
+#include <opencv2/highgui.hpp>
 
 #include <algorithm>
+
+std::atomic<bool> Image::shouldClose = false;;
 
 Image::Image(int width, int height)
 {
@@ -32,7 +34,7 @@ void Image::resize(int width, int height)
 
 void Image::resize(double factor)
 {
-	resize(m_Mat.cols * factor, m_Mat.rows * factor);
+	resize(m_Mat.cols * factor / 100, m_Mat.rows * factor / 100);
 }
 
 void Image::changeBrightness(double delta)
@@ -77,11 +79,10 @@ void Image::save(const char* filename)
 	cv::imwrite(filename, m_Mat);
 }
 
-void Image::show(const char* windowName)
+void Image::show(const char* windowName, bool wait)
 {
 	cv::imshow(windowName, m_Mat);
-	cv::waitKey(0);
-	cv::destroyWindow(windowName);
+	cv::waitKey(1);
 }
 
 Image Image::copy() {

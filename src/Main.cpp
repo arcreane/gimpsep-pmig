@@ -1,7 +1,11 @@
 #include <iostream>
+#include <thread>
 #include <windows.h>
 
+
 #include "Image.h"
+
+#include <opencv2/core/utils/logger.hpp>
 
 Image image;
 
@@ -9,11 +13,13 @@ int askNumber(int min, int max, std::string message);
 std::string askString(std::string message);
 double askDouble(double min, double max, std::string message);
 Image openImage(std::string line = "Entrez le nom du fichier: ");
-void enterEditMode();
+void showSliders(int command);
+bool enterEditMode();
 void enterStitchMode();
 
 int main(void)
 {
+	//cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
 	bool exit = false;
 	SetConsoleOutputCP(CP_UTF8);
 
@@ -36,10 +42,14 @@ int main(void)
 		int command = askNumber(1, 3, "Entrez un nombre entre 1 et 3.");
 		switch (command)
 		{
-		case 1:
+		case 1: {
 			image = openImage();
-			enterEditMode();
+			bool exit = false;
+			while (!exit) {
+				exit = enterEditMode();
+			}
 			break;
+		}
 		case 2:
 			enterStitchMode();
 		case 3:
@@ -115,8 +125,10 @@ double askDouble(double min, double max, std::string message) {
 	return number;
 }
 
-void enterEditMode()
+bool enterEditMode()
 {
+	image.show("Image");
+
 	std::cout << "1. Sauvegarder l'image" << std::endl;
 	std::cout << "2. Montrer l'image" << std::endl;
 	std::cout << "3. Tourner l'image (en son centre)" << std::endl;
@@ -130,15 +142,23 @@ void enterEditMode()
 	std::cout << "11. Retour au menu principal" << std::endl;
 
 	int command = askNumber(1, 11, "Entrez un nombre entre 1 et 11.");
+
+	showSliders(command);
+
+	if (command == 1) {
+		image.save(askString("Entrez le nom du fichier.").c_str());
+		return false;
+	}
+
+	int subCommand = askNumber(1, 2, "Voulez vous appliquer les changements (1) ou entrer une valeur en dure (2) ou annuler (3) ?");
+
+
 	bool returnToMain = false;
 
 	switch (command)
 	{
-	case 1:
-		image.save(askString("Entrez le nom du fichier.").c_str());
-		break;
-	case 2: 
-		image.show("Image");
+	case 2:
+		image.show("Image", true);
 		break;
 	case 3:
 		image.rotate(askDouble(0, 360, "Entrez un angle entre 0 et 360°"));
@@ -147,7 +167,7 @@ void enterEditMode()
 		image.rotate(askDouble(0, 360, "Entrez un angle entre 0 et 360°"), askNumber(0, image.getWidth(), "Entrez la coordonnée x du point de rotation"), askNumber(0, image.getHeight(), "Entrez la coordonnée y du point de rotation"));
 		break;
 	case 5:
-		image.resize(askDouble(0, 100, "Entrez le facteur de redimensionnement (entre 0 et 100)"));
+		image.resize(askDouble(0, 300, "Entrez le facteur de redimensionnement (entre 0 et 100)"));
 		break;
 	case 6:
 		image.resize(askNumber(1, 1920, "Entrez la largeur (entre 1 et 1920)"), askNumber(1, 1080, "Entrez la hauteur (entre 1 et 1080)"));
@@ -165,12 +185,42 @@ void enterEditMode()
 		image = image.detectEdges(askNumber(1, 8, "Entrez la taille du kernel (entre 1 et 8)"), askDouble(0, 256, "Entrez la valeur du threshold (entre 0 et 256)"));
 		break;
 	case 11:
-		returnToMain = true;
+		return true;
 	default:
 		break;
 	}
 
-	if (!returnToMain) enterEditMode();
+	return false;
+}
+
+void showSliders(int command) {
+	switch (command) {
+	case 3: {
+		int angle = 0;
+		cv::createTrackbar("Angle", "Image", &angle, 360, [](int angle, void* ptr) {
+			Image copy = image.copy();
+			copy.rotate(angle);
+			copy.show("Image");
+		});
+		break;
+	}
+	case 4:
+		break;
+	case 5:
+		break;
+	case 6:
+		break;
+	case 7:
+		break;
+	case 8:
+		break;
+	case 9:
+		break;
+	case 10:
+		break;
+	default:
+		break;
+	}
 }
 
 void enterStitchMode()

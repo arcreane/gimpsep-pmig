@@ -9,6 +9,9 @@
 class Image
 {
 public:
+
+	static std::atomic<bool> shouldClose;
+
 	Image(int width, int height);
 	Image(const char* filename);
 	Image() : m_Mat() {}
@@ -72,7 +75,7 @@ public:
 	/**
 		Shows the image in a window
 	*/
-	void show(const char* windowName);
+	void show(const char* windowName, bool wait = false);
 
 	/**
 		Creates a copy of the image
