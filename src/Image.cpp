@@ -4,8 +4,6 @@
 
 #include <algorithm>
 
-std::atomic<bool> Image::shouldClose = false;;
-
 Image::Image(int width, int height)
 {
 	m_Mat = cv::Mat::zeros(cv::Size(width, height), CV_64F);
@@ -79,10 +77,10 @@ void Image::save(const char* filename)
 	cv::imwrite(filename, m_Mat);
 }
 
-void Image::show(const char* windowName, bool wait)
+void Image::show(const char* windowName)
 {
 	cv::imshow(windowName, m_Mat);
-	cv::waitKey(1);
+	cv::waitKey(10);
 }
 
 Image Image::copy() {

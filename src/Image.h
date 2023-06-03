@@ -75,7 +75,7 @@ public:
 	/**
 		Shows the image in a window
 	*/
-	void show(const char* windowName, bool wait = false);
+	void show(const char* windowName);
 
 	/**
 		Creates a copy of the image
